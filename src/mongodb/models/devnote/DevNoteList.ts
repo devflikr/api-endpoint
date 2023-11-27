@@ -1,11 +1,11 @@
 import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 import devnoteDB from ".";
+import { uuid } from "flikr-utils";
 
 const DevNoteListSchema = new mongoose.Schema({
     uid: {
         type: ObjectId,
-        required: true,
     },
 
     title: {
@@ -25,12 +25,12 @@ const DevNoteListSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         required: true,
-        default: Date.now(),
+        default: Date.now,
     },
     modifiedAt: {
         type: Date,
         required: true,
-        default: Date.now(),
+        default: Date.now,
     },
     deletedAt: {
         type: Date,
@@ -38,13 +38,14 @@ const DevNoteListSchema = new mongoose.Schema({
 
     shareKey: {
         type: String,
+        required: true,
+        default: uuid,
+        unique: true,
     },
 
-    encryptionKey: {
-        type: String,
-    },
     starred: {
         type: Boolean,
+        required: true,
         default: false,
     },
 
@@ -65,6 +66,8 @@ export interface DevNoteListType {
     modifiedAt: Date;
 
     starred: boolean;
+
+    shareKey: string;
 }
 
 export interface DevNoteTrueNoteContentType {
@@ -80,17 +83,8 @@ export interface DevNoteTrueNoteContentType {
     modifiedAt: Date;
 
     starred: boolean;
-}
 
-export interface DevNoteSharableType {
-    id: ObjectId;
-    key: string;
-    uid: ObjectId;
-
-    isSharable: boolean;
-
-    shareKey?: string;
-    encryptionKey?: string;
+    shareKey: string;
 }
 
 export interface DevNoteTrashListType {
@@ -101,6 +95,19 @@ export interface DevNoteTrashListType {
     title: string;
 
     deletedAt: Date;
+}
+
+export interface DevNoteSharedNoteType {
+    id: string;
+    key: string;
+
+    title: string;
+    content: string;
+    language: string;
+
+    createdAt: Date;
+
+    shareKey: string;
 }
 
 const DevNoteList = devnoteDB.model("devnote-list", DevNoteListSchema);

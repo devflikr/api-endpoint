@@ -23,3 +23,22 @@ async function verifyUserId(req: ExpressRequest, res: ExpressResponse, next: Exp
 }
 
 export default verifyUserId;
+
+export async function verifyHasUserId(req: ExpressRequest, res: ExpressResponse, next: ExpressNextFunction) {
+    const uid = req.body["uid"] as string;
+
+    if (uid) {
+        try {
+            const userId = new ObjectId(uid);
+
+            if (!userId) return throwError(res, 202);
+
+            setRequestData(req, "uid", userId);
+
+        } catch (error) {
+            return throwError(res, 202);
+        }
+    }
+
+    next();
+}

@@ -1,10 +1,9 @@
 
-import { ObjectId } from "mongodb";
+import { encryptString } from "flikr-utils";
 import DevNoteList, { DevNoteTrueNoteContentType } from "../../mongodb/models/devnote/DevNoteList";
 import throwError from "../../tools/error";
 import successResponse from "../../tools/success";
 import { ExpressRequest, ExpressResponse } from "../../types/Express";
-import { encryptString } from "../../util/crypto";
 
 async function devnoteCtrlGetTrueNote(req: ExpressRequest, res: ExpressResponse) {
 
@@ -20,7 +19,7 @@ async function devnoteCtrlGetTrueNote(req: ExpressRequest, res: ExpressResponse)
 
         if (!note) return throwError(res, 505);
 
-        if (new ObjectId(String(note.uid)).toString() !== uid.toString()) return throwError(res, 506);
+        if (String(note.uid) !== uid.toString()) return throwError(res, 506);
 
         if (note.deletedAt && !note.isPermanentlyDeleted) return throwError(res, 507);
 
@@ -28,7 +27,7 @@ async function devnoteCtrlGetTrueNote(req: ExpressRequest, res: ExpressResponse)
 
         const result: DevNoteTrueNoteContentType = {
             id: note.id,
-            key: encodeURIComponent(encryptString(note._id.toString())),
+            key: encodeURIComponent(encryptString(note._id.toString(), process.env.CRYPTO_SECRET_KEY)),
             uid: uid,
 
             title: note.title,
@@ -39,6 +38,8 @@ async function devnoteCtrlGetTrueNote(req: ExpressRequest, res: ExpressResponse)
             modifiedAt: note.modifiedAt,
 
             starred: !!note.starred,
+
+            shareKey: note.shareKey,
         };
 
         return successResponse(res, "", result);

@@ -17,7 +17,7 @@ async function devnoteCtrlUpdateNote(req: ExpressRequest, res: ExpressResponse) 
     if (!language) return throwError(res, 102, "language");
 
     try {
-        
+
         await DevNoteList.updateOne({ _id: key, uid }, { title, content, language, modifiedAt: Date.now() });
 
         return successResponse(res, "Note updated successfully successfully");

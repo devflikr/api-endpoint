@@ -1,7 +1,7 @@
 import express from "express";
 import { ExpressRequest, ExpressResponse } from "../../types/Express";
 
-import verifyUserId from "../../features/uid";
+import verifyUserId, { verifyHasUserId } from "../../features/uid";
 import verifyDevNoteKey from "../../features/devnote/key";
 import verifyDevNoteKeys from "../../features/devnote/keys";
 import verifyDevNoteTitle from "../../features/devnote/title";
@@ -19,8 +19,10 @@ import devnoteCtrlAddToStarred from "../../controller/devnote/addstarred";
 import devnoteCtrlTrashForever from "../../controller/devnote/trashforever";
 import devnoteCtrlRestoreFromTrash from "../../controller/devnote/restoretrash";
 import devnoteCtrlRemoveFromStarred from "../../controller/devnote/removestarred";
-import devnoteCtrlSharable from "../../controller/devnote/sharable";
-import devnoteCtrlShareNote from "../../controller/devnote/sharenote";
+import verifyDevNoteShareKey from "../../features/devnote/sharekey";
+import devnoteCtrlSharedNote from "../../controller/devnote/sharednote";
+import devnoteCtrlSharedList from "../../controller/devnote/sharedlist";
+import devnoteCtrlCreateNote from "../../controller/devnote/createnote";
 
 const routerDevNote = express.Router();
 
@@ -29,6 +31,12 @@ routerDevNote.post(
     "/notelist",
     verifyUserId,
     devnoteCtrlNoteList,
+);
+
+routerDevNote.post(
+    "/sharedlist",
+    verifyUserId,
+    devnoteCtrlSharedList,
 );
 
 routerDevNote.post(
@@ -44,12 +52,27 @@ routerDevNote.post(
 );
 
 routerDevNote.post(
+    "/sharednote",
+    verifyHasUserId,
+    verifyDevNoteShareKey,
+    devnoteCtrlSharedNote,
+);
+
+routerDevNote.post(
     "/addnote",
     verifyUserId,
     verifyDevNoteTitle,
     verifyDevNoteContent,
     verifyDevNoteLanguage,
     devnoteCtrlAddNote,
+);
+
+routerDevNote.post(
+    "/createnote",
+    verifyDevNoteTitle,
+    verifyDevNoteContent,
+    verifyDevNoteLanguage,
+    devnoteCtrlCreateNote,
 );
 
 routerDevNote.post(
@@ -60,20 +83,6 @@ routerDevNote.post(
     verifyDevNoteContent,
     verifyDevNoteLanguage,
     devnoteCtrlUpdateNote,
-);
-
-routerDevNote.post(
-    "/sharablenote",
-    verifyUserId,
-    verifyDevNoteKey,
-    devnoteCtrlSharable,
-);
-
-routerDevNote.post(
-    "/sharenote",
-    verifyUserId,
-    verifyDevNoteKey,
-    devnoteCtrlShareNote,
 );
 
 routerDevNote.post(

@@ -1,9 +1,9 @@
 
+import { encryptString } from "flikr-utils";
 import DevNoteList, { DevNoteListType } from "../../mongodb/models/devnote/DevNoteList";
 import throwError from "../../tools/error";
 import successResponse from "../../tools/success";
 import { ExpressRequest, ExpressResponse } from "../../types/Express";
-import { encryptString } from "../../util/crypto";
 
 async function devnoteCtrlNoteList(req: ExpressRequest, res: ExpressResponse) {
 
@@ -26,7 +26,7 @@ async function devnoteCtrlNoteList(req: ExpressRequest, res: ExpressResponse) {
         for (const note of notelist) {
             result.push({
                 id: note._id,
-                key: encodeURIComponent(encryptString(note._id.toString())),
+                key: encodeURIComponent(encryptString(note._id.toString(), process.env.CRYPTO_SECRET_KEY)),
                 uid: uid,
 
                 title: note.title,
@@ -35,6 +35,8 @@ async function devnoteCtrlNoteList(req: ExpressRequest, res: ExpressResponse) {
                 modifiedAt: note.modifiedAt,
 
                 starred: !!note.starred,
+
+                shareKey: note.shareKey,
             });
         }
 

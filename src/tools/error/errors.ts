@@ -18,6 +18,7 @@ export interface ErrorType {
         noentry: ErrorCode; // 505
         restricted: ErrorCode; // 506
         deleted: ErrorCode; // 507
+        shareKey: ErrorCode; // 508
     };
 }
 
@@ -98,6 +99,12 @@ const errors: ErrorType = {
             code: 400,
             type: "devnote/note/trashed",
             message: "This note has been deleted",
+        },
+        shareKey: {
+            key: 508,
+            code: 400,
+            type: "devnote/shared/invalid",
+            message: "Share key is invalid",
         },
     },
 };

@@ -34,6 +34,7 @@
         "dotenv": "^16.0.3",
         "express": "^4.18.2",
         "express-useragent": "^1.0.15",
+        "flikr-utils": "^0.0.1",
         "id-shorter": "^0.1.2",
         "mongodb": "^5.7.0",
         "mongoose": "^7.4.1",

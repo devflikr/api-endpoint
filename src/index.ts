@@ -13,6 +13,7 @@ import userAgent from "express-useragent";
 import express, { Express } from "express";
 
 import routerDevNote from "./routes/devnote";
+import routerDevFlikr from "./routes/devflikr";
 
 // Setup a common mongodb database
 mongoose
@@ -55,3 +56,4 @@ expressApp.get("/", (req, res) => {
 
 // Add more routes here
 expressApp.use("/devnote", routerDevNote);
+expressApp.use("/devflikr", routerDevFlikr);

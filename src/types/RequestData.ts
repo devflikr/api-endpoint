@@ -10,9 +10,7 @@ interface RequestData {
     keys?: ObjectId[];
     key?: ObjectId;
 
-    sharable?: boolean | null;
-    shareKey: string;
-    encryptionKey?: string;
+    shareKey?: string;
 }
 
 export default RequestData;

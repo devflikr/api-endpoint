@@ -1,8 +1,8 @@
 import { ObjectId } from "mongodb";
 import throwError from "../../tools/error";
 import { ExpressNextFunction, ExpressRequest, ExpressResponse } from "../../types/Express";
-import { decryptString } from "../../util/crypto";
 import setRequestData from "../reqData";
+import { decryptString } from "flikr-utils";
 
 async function verifyDevNoteKey(req: ExpressRequest, res: ExpressResponse, next: ExpressNextFunction) {
     const key = req.body["key"] as string;
@@ -12,7 +12,7 @@ async function verifyDevNoteKey(req: ExpressRequest, res: ExpressResponse, next:
     let key_id: ObjectId;
 
     try {
-        key_id = new ObjectId(decryptString(decodeURIComponent(key)));
+        key_id = new ObjectId(decryptString(decodeURIComponent(key), process.env.CRYPTO_SECRET_KEY));
     } catch (error) {
         return throwError(res, 504);
     }
