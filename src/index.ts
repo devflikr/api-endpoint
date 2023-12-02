@@ -56,7 +56,7 @@ expressApp.get("/health", (req, res) => {
 if (process.env.IS_HEALTH_CHECK_ENABLED) {
     setInterval(() => {
         console.log("⚔️  api @health", new Date().toLocaleString());
-        https.get("https://devflikrauth.onrender.com/health");
+        https.get("https://devflikrapi.onrender.com/health");
     }, 540000);
 }
 
