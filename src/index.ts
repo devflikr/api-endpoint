@@ -1,5 +1,6 @@
 // Setup dotenv
 import "dotenv/config";
+import https from "https";
 
 // MongoDB imports
 import mongo from "./mongodb";
@@ -14,6 +15,7 @@ import express, { Express } from "express";
 
 import routerDevNote from "./routes/devnote";
 import routerDevFlikr from "./routes/devflikr";
+import { resolve } from "path";
 
 // Setup a common mongodb database
 mongoose
@@ -21,7 +23,7 @@ mongoose
         useNewUrlParser: true,
         useUnifiedTopology: true
     } as ConnectOptions)
-    .then(() => console.log("MongoDB is connected successfully."))
+    .then(() => console.log("⚔️  api @database mongodb"))
     .catch((err) => console.error(err));
 
 // Create an express app
@@ -40,18 +42,23 @@ expressApp.use(cors({
     credentials: true,
 }));
 
+expressApp.use(express.static(resolve("public")));
+
 // Setup port and test routes
 expressApp.listen(process.env.PORT, () => {
-    console.log(`Server started on ${process.env.PORT}`);
+    console.log(`⚔️  api @port ${process.env.PORT}`);
 });
 
-expressApp.get("/test", (req, res) => {
-    res.json(req.query || {});
+expressApp.get("/health", (req, res) => {
+    res.sendStatus(200);
 });
 
-expressApp.get("/", (req, res) => {
-    res.send("<center><h2>If you are seeing this, it means the server is working well.<hr />Just close this tab and go back to sleep. Good night...</h2></center>");
-});
+if (process.env.IS_HEALTH_CHECK_ENABLED) {
+    setInterval(() => {
+        console.log("⚔️  api @health", new Date().toLocaleString());
+        https.get("https://devflikrauth.onrender.com/health");
+    }, 540000);
+}
 
 
 // Add more routes here
