@@ -2,6 +2,7 @@
 import "dotenv/config";
 import https from "https";
 
+
 // MongoDB imports
 import mongo from "./mongodb";
 import mongoose, { ConnectOptions } from "mongoose";
@@ -16,6 +17,8 @@ import express, { Express } from "express";
 import routerDevNote from "./routes/devnote";
 import routerDevFlikr from "./routes/devflikr";
 import { resolve } from "path";
+import routerMeetUp from "./routes/meetup";
+import meetupCtrlSocket from "./controller/meetup";
 
 // Setup a common mongodb database
 mongoose
@@ -45,7 +48,7 @@ expressApp.use(cors({
 expressApp.use(express.static(resolve("public")));
 
 // Setup port and test routes
-expressApp.listen(process.env.PORT, () => {
+const expressServer = expressApp.listen(process.env.PORT, () => {
     console.log(`⚔️  api @port ${process.env.PORT}`);
 });
 
@@ -62,5 +65,9 @@ if (process.env.IS_HEALTH_CHECK_ENABLED) {
 
 
 // Add more routes here
+expressApp.use("/meetup", routerMeetUp);
 expressApp.use("/devnote", routerDevNote);
 expressApp.use("/devflikr", routerDevFlikr);
+
+// MeetUp Special WebSocket server
+meetupCtrlSocket(expressServer);

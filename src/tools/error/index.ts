@@ -6,13 +6,15 @@ function throwError(res: ExpressResponse, errorKey: number, ...data: unknown[]) 
 
     const error = getErrorDataByKey(errorKey);
 
+    const dataRes = data.length ? data : null;
+
     return res.status(error?.code || 404).json({
         error: true,
         status: "error",
         message: error?.message,
         code: error?.code,
         type: error?.type,
-        data: data
+        data: dataRes,
     }), false;
 }
 

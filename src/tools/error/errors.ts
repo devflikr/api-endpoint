@@ -20,6 +20,11 @@ export interface ErrorType {
         deleted: ErrorCode; // 507
         shareKey: ErrorCode; // 508
     };
+    meetup: {
+        invalid_code: ErrorCode; // 601
+        not_exist: ErrorCode; // 602
+        code_expired: ErrorCode; // 603
+    },
 }
 
 const errors: ErrorType = {
@@ -107,6 +112,26 @@ const errors: ErrorType = {
             message: "Share key is invalid",
         },
     },
+    meetup: {
+        invalid_code: {
+            key: 601,
+            code: 400,
+            type: "meetup/code/invalid",
+            message: "The MeetUp code is invalid",
+        },
+        not_exist: {
+            key: 602,
+            code: 400,
+            type: "meetup/code/no-entry",
+            message: "This MeetUp does not exist",
+        },
+        code_expired: {
+            key: 603,
+            code: 400,
+            type: "meetup/code/code-expired",
+            message: "This MeetUp has already ended",
+        },
+    }
 };
 
 export default errors;

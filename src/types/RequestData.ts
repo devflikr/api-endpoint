@@ -9,8 +9,10 @@ interface RequestData {
     language?: string;
     keys?: ObjectId[];
     key?: ObjectId;
-
     shareKey?: string;
+
+    // MeetUp
+    code?: string;
 }
 
 export default RequestData;

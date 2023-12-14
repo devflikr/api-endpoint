@@ -3,6 +3,7 @@
         "addnote",
         "addstarred",
         "BASESET",
+        "bufferutil",
         "createnote",
         "devflikr",
         "devflikrapi",
@@ -16,6 +17,7 @@
         "newnote",
         "noentry",
         "notelist",
+        "parsecode",
         "removestarred",
         "restoretrash",
         "sharablenote",
@@ -24,6 +26,7 @@
         "sharekey",
         "sharenote",
         "starredlist",
+        "startnew",
         "trashforever",
         "trashlist",
         "updatenote"
